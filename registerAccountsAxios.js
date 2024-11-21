@@ -7,6 +7,7 @@ const domain = "@gmail.com";
 
 const startIndex = 1;
 const endIndex = 20;
+const ref = "znQ3b";
 
 // API details
 const apiUrl = "https://ikknngrgxuxgjhplbpey.supabase.co/auth/v1/signup";
@@ -18,7 +19,6 @@ const authToken =
 // Default password for all accounts
 const defaultPassword = "01263500";
 
-// File to save the account data
 const outputFile = "accounts.js";
 
 // Function to register an account
@@ -27,7 +27,7 @@ const registerAccount = async (email) => {
         email: email,
         password: defaultPassword,
         data: {
-            invited_by: "znQ3b",
+            invited_by: ref,
         },
         gotrue_meta_security: {},
         code_challenge: null,
