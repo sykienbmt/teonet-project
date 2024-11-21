@@ -5,6 +5,9 @@ const fs = require("fs");
 const baseEmail = "bronze.hmt";
 const domain = "@gmail.com";
 
+const startIndex = 1;
+const endIndex = 20;
+
 // API details
 const apiUrl = "https://ikknngrgxuxgjhplbpey.supabase.co/auth/v1/signup";
 const apiKey =
@@ -55,7 +58,7 @@ const registerAccount = async (email) => {
 // Main function to create 20 accounts and save to file
 const main = async () => {
     const accounts = [];
-    for (let i = 2; i <= 20; i++) {
+    for (let i = startIndex; i <= endIndex; i++) {
         const email = `${baseEmail}+${i}${domain}`;
         console.log(`Registering account: ${email}`);
         const account = await registerAccount(email);
