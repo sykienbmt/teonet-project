@@ -1,7 +1,7 @@
 const { Builder, By, until } = require("selenium-webdriver");
 const chrome = require("selenium-webdriver/chrome");
 const path = require("path");
-const accounts = require("./account.js"); // Import danh sách tài khoản
+const accounts = require("./accounts.js"); // Import danh sách tài khoản
 const fs = require("fs");
 
 (async function automateAccounts() {

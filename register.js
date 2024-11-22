@@ -1,12 +1,10 @@
 const axios = require("axios");
+const easyYopmail = require("easy-yopmail");
 const fs = require("fs");
 
 // Base email and domain
-const baseEmail = "bronze.hmt";
-const domain = "@gmail.com";
+const quantity = 1;
 
-const startIndex = 1;
-const endIndex = 20;
 const ref = "znQ3b";
 
 // API details
@@ -47,23 +45,66 @@ const registerAccount = async (email) => {
             },
         });
 
-        console.log(`Account registered successfully: ${email}`);
         return { email, password: defaultPassword };
     } catch (error) {
         console.error(`Failed to register ${email}:`, error.response?.data || error.message);
         return null; // Return null if registration fails
     }
 };
+async function generateMultipleTempEmails() {
+    const emails = [];
+    try {
+        for (let i = 0; i < quantity; i++) {
+            const email = await easyYopmail.getMail();
+            emails.push(email);
+            console.log(`Email ${i + 1}:`, email);
+        }
+        return emails;
+    } catch (error) {
+        throw error;
+    }
+}
 
+async function confirmSignUp(email) {
+    try {
+        // Đọc inbox của email
+        const inbox = await easyYopmail.getInbox(email);
+        if (inbox.length === 0) {
+            console.log(`Hộp thư của ${email} trống.`);
+            return false;
+        }
+        console.log(inbox.inbox[0].id);
+
+        // Lấy nội dung của email đầu tiên
+        const messageId = inbox.inbox[0].id; // Lấy ID của tin nhắn đầu tiên
+        const message = await easyYopmail.readMessage(email, messageId, { format: 'HTML', selector: 'a', attribute: 'href' }); // Lấy nội dung HTML
+
+        if (!message) {
+            console.log('Không tìm thấy link trong button.');
+            return false;
+        }
+
+        await axios.get(message.content[0]);
+        return true
+    } catch (error) {
+        console.error('Lỗi khi nhấn vào button trong email:', error);
+        return false
+    }
+}
 // Main function to create 20 accounts and save to file
 const main = async () => {
+    const emails = await generateMultipleTempEmails(1);
     const accounts = [];
-    for (let i = startIndex; i <= endIndex; i++) {
-        const email = `${baseEmail}+${i}${domain}`;
-        console.log(`Registering account: ${email}`);
+    for (let i = 0; i < emails.length; i++) {
+        const email = emails[i];
         const account = await registerAccount(email);
         if (account) {
-            accounts.push(account); // Add successfully registered account to the list
+            const result = await confirmSignUp(email);
+            if (result) {
+                accounts.push(account); // Add successfully registered account to the list
+            } else {
+                console.log(`Failed to confirm sign up for ${email}`);
+            }
         }
     }
 
@@ -74,4 +115,4 @@ const main = async () => {
 };
 
 // Run the script
-main();
+main()
