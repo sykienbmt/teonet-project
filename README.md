@@ -1,5 +1,6 @@
 # Tạo account
 Thay đổi các thông số ở file register.js
+
 const quantity = 1; (Số account cần tạo)
 
 const ref = "znQ3b"; (Ref của bạn)
