@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "axios": "^1.7.7",
+    "easy-yopmail": "^5.2.1",
     "selenium-webdriver": "^4.26.0"
   }
 }
