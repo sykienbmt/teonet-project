@@ -19,7 +19,7 @@ class AccountManager {
     this.apiKey = apiKey;
     this.authToken = authToken;
     this.defaultPassword = "01263500";
-    this.pointThreshold = 2500;
+    this.pointThreshold = 2800;
   }
 
   async generateEmails() {
